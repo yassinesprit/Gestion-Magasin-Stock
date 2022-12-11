@@ -3,8 +3,10 @@ package com.esprit.tn.testspring.RestController;
 import com.esprit.tn.testspring.Entities.Produit;
 import com.esprit.tn.testspring.Service.IProduitService;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -37,6 +39,12 @@ public class ProduitController {
     @PutMapping("/assignf/{fournisseurId}/{produitId}")
     public void assignFournisseurToProduit(@PathVariable Long fournisseurId,@PathVariable Long produitId){
         iProduitService.assignFournisseurToProduit(fournisseurId,produitId);
+    }
+
+
+    @GetMapping("/brut/{idProduit}/{startDate}/{endDate}")
+    public float getRevenuBrutProduit(@PathVariable Long idProduit, @PathVariable@DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,@PathVariable@DateTimeFormat(pattern="yyyy-MM-dd") Date endDate){
+        return iProduitService.getRevenuBrutProduit(idProduit,startDate,endDate);
     }
 
 }

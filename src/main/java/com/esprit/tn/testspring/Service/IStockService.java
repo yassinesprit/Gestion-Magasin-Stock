@@ -13,6 +13,6 @@ public interface IStockService {
 
     Stock retrieveStock(Long id);
 
-
+    String retrieveStatusStock();
 
 }

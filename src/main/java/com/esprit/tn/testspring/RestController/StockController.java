@@ -1,6 +1,7 @@
 package com.esprit.tn.testspring.RestController;
 
 import com.esprit.tn.testspring.Entities.Stock;
+import com.esprit.tn.testspring.Repository.StockRepository;
 import com.esprit.tn.testspring.Service.IStockService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -34,4 +35,6 @@ public class StockController {
     public Stock retrieveStock(@PathVariable Long id) {
         return iStockService.retrieveStock(id);
     }
+
+
 }

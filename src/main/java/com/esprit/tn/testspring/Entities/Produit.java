@@ -1,5 +1,6 @@
 package com.esprit.tn.testspring.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,6 @@ public class Produit implements Serializable {
     @OneToOne(cascade = CascadeType.PERSIST)
     public DetailProduit detailProduit;
     @OneToMany(mappedBy = "produit")
+    @JsonIgnore
     public List<DetailFacture> detailFactures;
 }

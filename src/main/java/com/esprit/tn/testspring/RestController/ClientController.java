@@ -1,11 +1,14 @@
 package com.esprit.tn.testspring.RestController;
 
 
+import com.esprit.tn.testspring.Entities.CategorieClient;
 import com.esprit.tn.testspring.Entities.Client;
 import com.esprit.tn.testspring.Service.IClientService;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -40,4 +43,12 @@ public class ClientController {
         return iClientService.retrieveClient(id);
     }
 
-}
+    @GetMapping("/chiffre/{startDate}/{endDate}/{categorieClient}")
+    public float getChiffreAffaireParCategorieClient(@PathVariable CategorieClient categorieClient, @PathVariable@DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,@PathVariable@DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) {
+        return iClientService.getChiffreAffaireParCategorieClient(categorieClient,startDate,endDate);
+    }
+    }
+
+
+
+

@@ -1,10 +1,14 @@
 package com.esprit.tn.testspring.Service;
 
+import com.esprit.tn.testspring.Entities.CategorieClient;
 import com.esprit.tn.testspring.Entities.Client;
+import com.esprit.tn.testspring.Entities.Facture;
 import com.esprit.tn.testspring.Repository.ClientRepository;
+import com.esprit.tn.testspring.Repository.FactureRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -12,6 +16,7 @@ import java.util.List;
 public class ClientServiceImpl implements IClientService{
 
     ClientRepository clientRepository;
+    FactureRepository factureRepository;
 
     @Override
     public List<Client> retrieveAllClients() {
@@ -36,5 +41,18 @@ public class ClientServiceImpl implements IClientService{
     @Override
     public Client retrieveClient(Long id) {
         return clientRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public float getChiffreAffaireParCategorieClient(CategorieClient categorieClient, Date startDate, Date endDate) {
+        List<Client> clients = clientRepository.findByCategorieClient(categorieClient);
+        float somme=0;
+        for (Client c :clients) {
+            List<Facture> factures=factureRepository.findByClientAndDateFactureBetween(c,startDate,endDate);
+            for (Facture f :factures) {
+                somme=somme+ f.getMontantFacture();
+            }
+        }
+        return somme;
     }
 }

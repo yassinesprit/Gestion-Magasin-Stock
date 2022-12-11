@@ -1,17 +1,12 @@
 package com.esprit.tn.testspring.Service;
 
-import com.esprit.tn.testspring.Entities.Fournisseur;
-import com.esprit.tn.testspring.Entities.Produit;
-import com.esprit.tn.testspring.Entities.Rayon;
-import com.esprit.tn.testspring.Entities.Stock;
-import com.esprit.tn.testspring.Repository.FournisseurRepository;
-import com.esprit.tn.testspring.Repository.ProduitRepository;
-import com.esprit.tn.testspring.Repository.RayonRepository;
-import com.esprit.tn.testspring.Repository.StockRepository;
+import com.esprit.tn.testspring.Entities.*;
+import com.esprit.tn.testspring.Repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,6 +17,7 @@ public class ProduitServiceImpl implements IProduitService{
     RayonRepository rayonRepository;
     StockRepository stockRepository;
     FournisseurRepository fournisseurRepository;
+    DetailFactureRepository detailFactureRepository;
     @Override
     public List<Produit> retrieveAllProduits() {
         return produitRepository.findAll();
@@ -66,5 +62,16 @@ public class ProduitServiceImpl implements IProduitService{
             p.getFournisseurs().add(f);
         }
         produitRepository.save(p);
+    }
+
+    @Override
+    public float getRevenuBrutProduit(Long idProduit, Date startDate, Date endDate) {
+        float brut=0;
+        List<DetailFacture> detailFactures=detailFactureRepository.findByProduitIdProduitAndFactureDateFactureBetween(idProduit,startDate,endDate) ;
+            for (DetailFacture d:detailFactures)
+            {
+                brut=brut+(d.getProduit().getPrixProduit()*d.getQte());
+            }
+        return brut;
     }
 }
